@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUP on BNB - The Mirror Pup</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); /* BNB-inspired orange gradient */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .header-banner {
+            width: 100%;
+            max-width: 1500px;
+            height: auto;
+            margin-bottom: 1em;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .header {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .subheader {
+            font-size: 1.5em;
+            margin-bottom: 2em;
+            opacity: 0.9;
+        }
+        .contract-section {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 2em;
+            margin: 2em 0;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            font-family: 'Arial', sans-serif;
+        }
+        .contract-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1em;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .contract-address {
+            background: rgba(0,0,0,0.3);
+            border: none;
+            width: 100%;
+            padding: 1em;
+            font-size: 0.9em;
+            font-family: monospace;
+            border-radius: 10px;
+            margin-bottom: 1em;
+            text-align: center;
+            color: white;
+            box-sizing: border-box;
+        }
+        .copy-btn {
+            display: block;
+            margin: 0.5em auto 0;
+            background: white;
+            color: #e67e22;
+            border: none;
+            padding: 0.3em 0.6em;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.7em;
+            font-weight: bold;
+            width: fit-content;
+        }
+        .copy-btn:hover {
+            background: #e67e22;
+            color: white;
+        }
+        .contract-buttons {
+            display: flex;
+            justify-content: space-around;
+            gap: 1em;
+            margin-top: 1em;
+        }
+        .contract-btn {
+            background: rgba(255,255,255,0.9);
+            color: #e67e22;
+            border: 2px solid #e67e22;
+            padding: 0.8em 1.5em;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+        .contract-btn:hover {
+            background: #e67e22;
+            color: white;
+        }
+        .action-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1em;
+            margin: 2em 0;
+        }
+        .buy-button {
+            background: #000;
+            color: #f39c12;
+            border: 2px solid #f39c12;
+            padding: 15px 30px;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            width: auto;
+        }
+        .buy-button:hover {
+            background: #f39c12;
+            color: #000;
+            transform: scale(1.05);
+        }
+        .social-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .social-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 15px;
+            border: 1px solid white;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        .social-links a:hover {
+            background: white;
+            color: #000;
+        }
+        .gallery-section {
+            margin: 2em 0;
+            width: 100%;
+            max-width: 900px;
+        }
+        .gallery-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 1.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .meme-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 250px);
+            gap: 1em;
+            padding: 0 1em;
+            justify-content: center;
+        }
+        .meme-item {
+            background: #f39c12; /* Orange frame like your example */
+            border-radius: 15px;
+            padding: 1em;
+            transition: transform 0.3s ease;
+            aspect-ratio: 1; /* Square containers for uniform sizing */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer; /* Indicates clickable */
+        }
+        .meme-item:hover {
+            transform: scale(1.05);
+        }
+        .meme-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Auto-resizes to fill without distortion */
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        /* Lightbox Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s;
+        }
+        .modal-content {
+            position: relative;
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90%;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: zoom 0.3s;
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .close:hover {
+            color: #f39c12;
+        }
+        .download-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .download-btn:hover {
+            background: #e67e22;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        @keyframes zoom {
+            from {transform: translateY(-50%) scale(0.5);}
+            to {transform: translateY(-50%) scale(1);}
+        }
+        .mirror-text {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            font-weight: bold;
+            color: rgba(255,255,255,0.8);
+            writing-mode: horizontal-tb;
+            z-index: 10;
+        }
+        @media (max-width: 768px) {
+            .header { font-size: 2em; }
+            .subheader { font-size: 1.2em; }
+            .meme-gallery { 
+                grid-template-columns: repeat(2, 200px); /* 2 on tablet/smaller screens */
+                gap: 0.5em; 
+            }
+            .contract-buttons { flex-direction: column; }
+            .header-banner { max-width: 100%; }
+            .social-links { flex-direction: column; align-items: center; }
+            .modal-content { width: 95%; }
+        }
+        @media (max-width: 480px) {
+            .meme-gallery { grid-template-columns: 1fr; max-width: 250px; }
+            .close { top: 10px; right: 20px; font-size: 30px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="mirror-text">BNB → PUP ← MIRROR</div>
+    
+    <img src="https://pbs.twimg.com/profile_banners/1974506415390691328/1759601285/1500x500" alt="Pup on BNB Banner" class="header-banner">
+    
+    <h1 class="header">PUP on BNB</h1>
+    <p class="subheader">The Loyal Mirror Pup Reflecting Gains on the Chain</p>
+    
+    <section class="contract-section">
+        <h2 class="contract-title">CONTRACT ADDRESS</h2>
+        <div style="position: relative;">
+            <input type="text" class="contract-address" id="contractAddr" value="0x73b84f7e3901f39fc29f3704a03126d317ab4444" readonly>
+        </div>
+        <button class="copy-btn" onclick="copyAddress()">📋 Copy</button>
+        <div class="contract-buttons">
+            <a href="https://four.meme/token/0x73b84f7e3901f39fc29f3704a03126d317ab4444" class="contract-btn" target="_blank">View on Four.meme</a>
+            <a href="https://dexscreener.com/bsc/0x8e86a6c334ab270084bf8273d5293488f2578207" class="contract-btn" target="_blank">View on DexScreener</a>
+        </div>
+    </section>
+    
+    <section class="action-section">
+        <a href="https://pump.fun/2qkjTVJChd8K1ECEJ7eQmXtB8nLyG56u1pump" class="buy-button" target="_blank">Buy $PUP</a>
+        
+        <div class="social-links">
+            <a href="https://twitter.com/pupXbnb" target="_blank">🐦 Twitter</a>
+            <a href="https://x.com/i/communities/1974555622281560563" target="_blank">📱 Community</a>
+            <a href="https://www.dextools.io/app/en/bnb/pair-explorer/0x8e86a6c334ab270084bf8273d5293488f2578207?t=1759606776194" target="_blank">📊 Chart</a>
+        </div>
+    </section>
+    
+    <section class="gallery-section">
+        <h2 class="gallery-title">Meme Gallery</h2>
+        <div class="meme-gallery">
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424112620155310131/G2bwruQXMAAIH1B.png?ex=68e2c3bb&is=68e1723b&hm=daeb9e799ab3160adc26b204bb735294a4c12a23233efdda2b815b80f49314f9&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424112620155310131/G2bwruQXMAAIH1B.png?ex=68e2c3bb&is=68e1723b&hm=daeb9e799ab3160adc26b204bb735294a4c12a23233efdda2b815b80f49314f9&" alt="Pup Meme 1" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424112799717527602/G2b6-3VWUAAtCu0.png?ex=68e2c3e6&is=68e17266&hm=2c4c36cd7225b857f7f61eff538377304f72c338680eee40e5182ca31666386b&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424112799717527602/G2b6-3VWUAAtCu0.png?ex=68e2c3e6&is=68e17266&hm=2c4c36cd7225b857f7f61eff538377304f72c338680eee40e5182ca31666386b&" alt="Pup Meme 2" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424112872878899230/G2bT483bIAAnR-Y.png?ex=68e2c3f7&is=68e17277&hm=429792d1ea033ef9269ce1de237ece3ae442a4ff5350a16293cac057085abbe0&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424112872878899230/G2bT483bIAAnR-Y.png?ex=68e2c3f7&is=68e17277&hm=429792d1ea033ef9269ce1de237ece3ae442a4ff5350a16293cac057085abbe0&" alt="Pup Meme 3" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424112913660252401/G2afOABWAAAaZMn.png?ex=68e2c401&is=68e17281&hm=3ca20d69ff99724fdf228925ff8cf650731afc903799803d3aab33f13996e906&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424112913660252401/G2afOABWAAAaZMn.png?ex=68e2c401&is=68e17281&hm=3ca20d69ff99724fdf228925ff8cf650731afc903799803d3aab33f13996e906&" alt="Pup Meme 4" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424112935533281380/G2Zwc_WXcAAB124.png?ex=68e2c406&is=68e17286&hm=74eb307a7a674e86c0ed020e189bfc0423bdecc03c519f6d6869d12e1a374d64&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424112935533281380/G2Zwc_WXcAAB124.png?ex=68e2c406&is=68e17286&hm=74eb307a7a674e86c0ed020e189bfc0423bdecc03c519f6d6869d12e1a374d64&" alt="Pup Meme 5" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424112959658918048/G2Y_pUQbYAAQUb5.png?ex=68e2c40c&is=68e1728c&hm=6382c6e02e82a80364d0e3451570846a44e5397ab7640fe6f206a61543f35087&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424112959658918048/G2Y_pUQbYAAQUb5.png?ex=68e2c40c&is=68e1728c&hm=6382c6e02e82a80364d0e3451570846a44e5397ab7640fe6f206a61543f35087&" alt="Pup Meme 6" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424112985412075702/G2XN-UJbkAAE4OS.png?ex=68e2c412&is=68e17292&hm=4a593f11d950b0125a5e79d6c5da6230649a86db61223b4aeda32fa31f7fa220&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424112985412075702/G2XN-UJbkAAE4OS.png?ex=68e2c412&is=68e17292&hm=4a593f11d950b0125a5e79d6c5da6230649a86db61223b4aeda32fa31f7fa220&" alt="Pup Meme 7" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424113000670953482/G2XBvLKWAAAYQL9.png?ex=68e2c416&is=68e17296&hm=2b48134e3bff6daec13029865fbc345132602fab0a6e44b965edc29a94bbaf7c&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424113000670953482/G2XBvLKWAAAYQL9.png?ex=68e2c416&is=68e17296&hm=2b48134e3bff6daec13029865fbc345132602fab0a6e44b965edc29a94bbaf7c&" alt="Pup Meme 8" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424113035873882262/G2WZEKHXAAAeeYs.png?ex=68e2c41e&is=68e1729e&hm=1ef2a26a523adba78f0136e8f935ddb1259d0f5e250d253ff651dc38c64d4ee9&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424113035873882262/G2WZEKHXAAAeeYs.png?ex=68e2c41e&is=68e1729e&hm=1ef2a26a523adba78f0136e8f935ddb1259d0f5e250d253ff651dc38c64d4ee9&" alt="Pup Meme 9" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424113062729744384/G2VxF57XMAAE1uy.png?ex=68e2c424&is=68e172a4&hm=d5d31aa2419a44e531706a0cd81df459f3c0391c536af6a01f1e777971ad6ac9&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424113062729744384/G2VxF57XMAAE1uy.png?ex=68e2c424&is=68e172a4&hm=d5d31aa2419a44e531706a0cd81df459f3c0391c536af6a01f1e777971ad6ac9&" alt="Pup Meme 10" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424113109890633848/G2S4RBnbMAQvwoi.png?ex=68e2c430&is=68e172b0&hm=13136417874179ed9d2b5a35b497e01b8cab7798a6b53005bc5a8400df8c957f&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424113109890633848/G2S4RBnbMAQvwoi.png?ex=68e2c430&is=68e172b0&hm=13136417874179ed9d2b5a35b497e01b8cab7798a6b53005bc5a8400df8c957f&" alt="Pup Meme 11" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://cdn.discordapp.com/attachments/1397790509488934976/1424113123832365136/G2SghfAWYAAkdbl.png?ex=68e2c433&is=68e172b3&hm=841b97d9d86863f0aa8b71e830f5e04c4ad0b931a2bf0342a12e30a0f1847647&')">
+                <img src="https://cdn.discordapp.com/attachments/1397790509488934976/1424113123832365136/G2SghfAWYAAkdbl.png?ex=68e2c433&is=68e172b3&hm=841b97d9d86863f0aa8b71e830f5e04c4ad0b931a2bf0342a12e30a0f1847647&" alt="Pup Meme 12" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://media.discordapp.net/attachments/1397790509488934976/1424113164265717892/G2ZbB3iXIAAyz3-.png?ex=68e2c43d&is=68e172bd&hm=53743cab78c3f38cda0f74e0c0aba36a2b9a82e21e3ca255be8e9d449a95e735&=&format=webp&quality=lossless&width=210&height=315')">
+                <img src="https://media.discordapp.net/attachments/1397790509488934976/1424113164265717892/G2ZbB3iXIAAyz3-.png?ex=68e2c43d&is=68e172bd&hm=53743cab78c3f38cda0f74e0c0aba36a2b9a82e21e3ca255be8e9d449a95e735&=&format=webp&quality=lossless&width=210&height=315" alt="Pup Meme 13" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://media.discordapp.net/attachments/1397790509488934976/1424113180178907266/G2Z_DszXAAAHZXh.png?ex=68e2c440&is=68e172c0&hm=1c10637e6b2b507ff7aaf1311833b98a58561596a0c9ea1d8e4ef3d73d296fa9&=&format=webp&quality=lossless&width=210&height=315')">
+                <img src="https://media.discordapp.net/attachments/1397790509488934976/1424113180178907266/G2Z_DszXAAAHZXh.png?ex=68e2c440&is=68e172c0&hm=1c10637e6b2b507ff7aaf1311833b98a58561596a0c9ea1d8e4ef3d73d296fa9&=&format=webp&quality=lossless&width=210&height=315" alt="Pup Meme 14" class="meme-image">
+            </div>
+            <div class="meme-item" onclick="openModal('https://media.discordapp.net/attachments/1397790509488934976/1424113203050188801/G2ap9EiWwAEi17P.png?ex=68e2c446&is=68e172c6&hm=2b52ee842b42e5cd559fad4735f8749e3ea4fed83a798b75a8154a2435dd64a7&=&format=webp&quality=lossless&width=877&height=877')">
+                <img src="https://media.discordapp.net/attachments/1397790509488934976/1424113203050188801/G2ap9EiWwAEi17P.png?ex=68e2c446&is=68e172c6&hm=2b52ee842b42e5cd559fad4735f8749e3ea4fed83a798b75a8154a2435dd64a7&=&format=webp&quality=lossless&width=877&height=877" alt="Pup Meme 15" class="meme-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="imageModal" class="modal" onclick="closeModal(event)">
+        <span class="close" onclick="closeModal(event)">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <a id="downloadLink" class="download-btn" download>⬇️ Download</a>
+    </div>
+    
+    <script>
+        function copyAddress() {
+            const addr = document.getElementById('contractAddr');
+            addr.select();
+            document.execCommand('copy');
+            alert('Address copied to clipboard!');
+        }
+
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const downloadLink = document.getElementById('downloadLink');
+            modal.style.display = 'block';
+            modalImg.src = src;
+            downloadLink.href = src;
+            downloadLink.download = 'pup-meme.png'; // Generic filename; can be dynamic if needed
+        }
+
+        function closeModal(event) {
+            if (event.target.classList.contains('modal') || event.target.classList.contains('close')) {
+                document.getElementById('imageModal').style.display = 'none';
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal(event);
+            }
+        });
+    </script>
+</body>
+</html>
